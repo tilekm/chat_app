@@ -2,9 +2,10 @@ package db
 
 import (
 	"database/sql"
+	"log"
 
-	_ "github.com/lib/pq"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 type Database struct {
@@ -12,13 +13,13 @@ type Database struct {
 }
 
 func NewDatabase() (*Database, error) {
-	envs, err := godotenv.Read(".env")
+	envs, err := godotenv.Read("../.env")
 
-    if err != nil {
-        log.Fatal("Error loading .env file")
-    }
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-    databse := envs["database"]
+	database := envs["database"]
 	db, err := sql.Open("postgres", database)
 	if err != nil {
 		return nil, err
