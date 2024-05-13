@@ -22,12 +22,12 @@ Welcome to the Chat App Backend repository! This project serves as the backend i
 
 1. **Clone the Repository**: 
     ```bash
-    git clone https://github.com/your_username/chat-app-backend.git
+    git clone https://github.com/tilekm/chat_app.git
     ```
 
 2. **Install Dependencies**: 
     ```bash
-    cd chat-app/server
+    cd chat_app/server
     # Install Golang dependencies
     go mod download
     ```
