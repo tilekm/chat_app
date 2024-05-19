@@ -13,14 +13,19 @@ type Database struct {
 }
 
 func NewDatabase() (*Database, error) {
-	envs, err := godotenv.Read("../.env")
+	envs, err := godotenv.Read(".env")
 
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal("Error loading .env file", err)
 	}
 
-	database := envs["database"]
-	db, err := sql.Open("postgres", database)
+	database := envs["DATABASE"]
+	user := envs["USER"]
+	password := envs["PASSWORD"]
+	host := envs["HOST"]
+	port := envs["PORT"]
+	dbName := envs["DBNAME"]
+	db, err := sql.Open("postgres", database+"://"+user+":"+password+"@"+host+":"+port+"/"+dbName+"?sslmode=disable")
 	if err != nil {
 		return nil, err
 	}
