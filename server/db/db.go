@@ -20,13 +20,14 @@ func NewDatabase() (*Database, error) {
 	}
 
 	database := envs["DATABASE"]
-	user := envs["USER"]
+	user := envs["USERNAME"]
 	password := envs["PASSWORD"]
 	host := envs["HOST"]
 	port := envs["PORT"]
 	dbName := envs["DBNAME"]
 	db, err := sql.Open("postgres", database+"://"+user+":"+password+"@"+host+":"+port+"/"+dbName+"?sslmode=disable")
 	if err != nil {
+		log.Fatal("Error connecting to database", err)
 		return nil, err
 	}
 
