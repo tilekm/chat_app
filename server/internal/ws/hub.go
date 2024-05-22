@@ -36,8 +36,8 @@ func (h *Hub) Run() {
 				if _, ok := r.Clients[cl.ID]; ok {
 					if len(r.Clients) > 0 {
 						h.Broadcast <- &Message{
-							Content: cl.Username + " has left the room",
-							RoomId:  cl.RoomId,
+							Content:  cl.Username + " has left the room",
+							RoomId:   cl.RoomId,
 							Username: "system",
 						}
 					}
