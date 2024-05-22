@@ -1,13 +1,18 @@
 "use client"
 
-import { API_URL } from '@/constants'
-import { useEffect, useState } from 'react'
+import { API_URL, WEBSOCKET_URL } from '@/constants'
+import { AuthContext } from '@/modules/auth_provider'
+import { WebSocketContext } from '@/modules/websocket_provider'
+import { useEffect, useState, useContext } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { useRouter } from 'next/navigation'
 
 const index = () => {
-  const [rooms, setRooms] = useState<{ id: string, name: string }[]>([
-  ])
+  const [rooms, setRooms] = useState<{ id: string, name: string }[]>([])
   const [roomName, setRoomName] = useState("")
+  const { user } = useContext(AuthContext)
+  const { setConn } = useContext(WebSocketContext)
+  const router = useRouter()
 
   const getRooms = async () => {
     try {
@@ -49,6 +54,15 @@ const index = () => {
     }
   }
 
+  const joinRoom = (roomId: string) => {
+    const ws = new WebSocket(`${WEBSOCKET_URL}/ws/joinRoom/${roomId}?userId=${user.id}&username=${user.username}`)
+    if (ws.OPEN) {
+      setConn(ws)
+      router.push('/app')
+      return
+    }
+  }
+
   return (
     <div className='my-8 px-4 w-full h-full'>
       <div className='flex justify-center mt-3 p-5'>
@@ -58,7 +72,7 @@ const index = () => {
          value={roomName}
          onChange={e => setRoomName(e.target.value)}
          />
-        <button className='bg-blue border text-white rounded-md p-2 md:ml-4'>create room</button>
+        <button className='bg-blue border text-white rounded-md p-2 md:ml-4' onClick={submitHandler}>create room</button>
       </div>
       <div className='mt-6'>
         <div className="font-bold">Available Rooms</div>
@@ -72,7 +86,7 @@ const index = () => {
                 </div>
               </div>
               <div>
-                <button className="px-4 text-white bg-blue rounded-md" onClick={submitHandler}>
+                <button className="px-4 text-white bg-blue rounded-md" onClick={() => joinRoom(room.id)}>
                   join
                 </button>
               </div>

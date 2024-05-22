@@ -1,5 +1,6 @@
 import "@/app/globals.css";
 import AuthContextProvider from "@/modules/auth_provider";
+import WebSocketProvider from "@/modules/websocket_provider";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthContextProvider>
-          {children}
+          <WebSocketProvider>
+            {children}
+          </WebSocketProvider>
         </AuthContextProvider>
         </body>
     </html>
